@@ -1,7 +1,9 @@
-import { Column, Entity, JoinColumn, OneToMany } from "typeorm"
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany } from "typeorm"
 import { BaseEntityModel } from "./base.entity.model";
 import { ImagesEntity } from "./images.entity";
 import { NoteCaseEntity } from "./note.cases.entity";
+import { UsersEntity } from "./users.entity";
+import { DocumentsEntity } from "./documents.entity";
 
 @Entity('cases')
 export class CasesEntity extends BaseEntityModel {
@@ -23,4 +25,12 @@ export class CasesEntity extends BaseEntityModel {
     @OneToMany(() => NoteCaseEntity, (note) => note.cases)
     @JoinColumn({ name: 'note_case_id' })
     note: NoteCaseEntity[];
+
+    @ManyToMany(() => UsersEntity, (users) => users.cases)
+    @JoinTable()
+    users:UsersEntity[];
+
+    @OneToMany(() => DocumentsEntity, (document) => document.cases)
+    @JoinColumn({ name: 'document_id' })
+    document: DocumentsEntity[];
 }

@@ -2,7 +2,7 @@ import { Column, Entity, JoinColumn, ManyToOne } from "typeorm"
 import { CasesEntity } from "./cases.entity";
 import { BaseEntityModel } from "./base.entity.model";
 
-@Entity()
+@Entity('notes')
 export class NoteCaseEntity extends BaseEntityModel{
     @Column()
     text_note: string;

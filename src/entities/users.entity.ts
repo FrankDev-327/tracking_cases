@@ -1,8 +1,10 @@
-import { Entity, Column, OneToMany } from "typeorm"
+import { Entity, Column, OneToMany, ManyToMany, JoinTable, OneToOne, JoinColumn } from "typeorm"
 import { BaseEntityModel } from "./base.entity.model"
+import { CasesEntity } from "./cases.entity";
+import { DepartmentsEntity } from "./departments.entity";
 
 @Entity('users')
-export class Users extends BaseEntityModel {
+export class UsersEntity extends BaseEntityModel {
     @Column()
     name: string;
 
@@ -21,4 +23,12 @@ export class Users extends BaseEntityModel {
         unique: true
     })
     identification_id: string;
+
+    @ManyToMany(() => CasesEntity, (cases) => cases.users)
+    @JoinTable()
+    cases: CasesEntity[];
+
+    @OneToOne(() => DepartmentsEntity)
+    @JoinColumn({name: 'departament_id'})
+    departament: DepartmentsEntity;
 }
