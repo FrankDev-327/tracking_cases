@@ -8,11 +8,12 @@ import { ImagesModule } from './images/images.module';
 import { DepartamentsModule } from './departaments/departaments.module';
 import { NotesModule } from './notes/notes.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { CloudinayModule } from './cloudinay/cloudinay.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot(typeormConfig),
-    DocumentsModule, UsersModule, CasesModule, ImagesModule, DepartamentsModule, NotesModule],
+    DocumentsModule, UsersModule, CasesModule, ImagesModule, DepartamentsModule, NotesModule, CloudinayModule],
 })
 export class AppModule {}

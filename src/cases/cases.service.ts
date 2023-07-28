@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Like } from 'typeorm';
 import { CasesEntity } from 'src/entities/cases.entity';
 import { CreateCaseDto } from './dto/create.case.dto';
+import { UsersEntity } from 'src/entities/users.entity';
 
 @Injectable()
 export class CasesService extends Repository<CasesEntity> {
@@ -27,5 +28,12 @@ export class CasesService extends Repository<CasesEntity> {
             where: {id},
             relations: ['image','note']
         });
+    }
+
+    async assignCaseToUser(id:string, user: string): Promise<CasesEntity> {
+        const cases = await this.getImageCasesById(id);
+
+
+        return 
     }
 }
