@@ -1,21 +1,18 @@
 import { Module } from '@nestjs/common';
-import { DocumentsController } from './documents/documents.controller';
-import { ServiceController } from './service/service.controller';
-import { ModuleController } from './module/module.controller';
-import { DocumentsService } from './documents/documents.service';
+import {typeormConfig} from '../db/orm'
+import { ConfigModule } from '@nestjs/config';
 import { DocumentsModule } from './documents/documents.module';
 import { UsersModule } from './users/users.module';
-import { CasesController } from './cases/cases.controller';
 import { CasesModule } from './cases/cases.module';
-import { ImagesService } from './images/images.service';
 import { ImagesModule } from './images/images.module';
 import { DepartamentsModule } from './departaments/departaments.module';
-import { NotesService } from './notes/notes.service';
 import { NotesModule } from './notes/notes.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
-  imports: [DocumentsModule, UsersModule, CasesModule, ImagesModule, DepartamentsModule, NotesModule],
-  controllers: [DocumentsController, ServiceController, ModuleController, CasesController],
-  providers: [DocumentsService, ImagesService, NotesService],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+    TypeOrmModule.forRoot(typeormConfig),
+    DocumentsModule, UsersModule, CasesModule, ImagesModule, DepartamentsModule, NotesModule],
 })
 export class AppModule {}
