@@ -10,5 +10,7 @@ export const typeormConfig : PostgresConnectionOptions = {
       __dirname + '/../**/*.entity{.ts,.js}',
     ],
     migrations: [__dirname + '/../migrations/*{.ts,.js}'],
-    logging: process.env.NODE_ENV !== 'prod',
+    logging: false
 }
+
+//process.env.NODE_ENV !== 'prod',

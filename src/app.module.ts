@@ -9,11 +9,12 @@ import { DepartamentsModule } from './departaments/departaments.module';
 import { NotesModule } from './notes/notes.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CloudinayModule } from './cloudinay/cloudinay.module';
+import { RedisModule } from './redis/redis.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot(typeormConfig),
-    DocumentsModule, UsersModule, CasesModule, ImagesModule, DepartamentsModule, NotesModule, CloudinayModule],
+    DocumentsModule, UsersModule, CasesModule, ImagesModule, DepartamentsModule, NotesModule, CloudinayModule, RedisModule],
 })
 export class AppModule {}

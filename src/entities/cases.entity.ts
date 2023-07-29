@@ -27,7 +27,6 @@ export class CasesEntity extends BaseEntityModel {
     note: NoteCaseEntity[];
 
     @ManyToMany(() => UsersEntity, (users) => users.cases)
-    @JoinTable()
     users:UsersEntity[];
 
     @OneToMany(() => DocumentsEntity, (document) => document.cases)
