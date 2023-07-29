@@ -25,7 +25,7 @@ export class UsersEntity extends BaseEntityModel {
     identification_id: string;
 
     @ManyToMany(() => CasesEntity, (cases) => cases.users)
-    @JoinTable()
+    @JoinTable({name: 'cases_users_table'})
     cases: CasesEntity[];
 
     @OneToOne(() => DepartmentsEntity)
