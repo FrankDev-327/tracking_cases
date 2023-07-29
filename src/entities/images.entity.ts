@@ -1,6 +1,7 @@
-import { Column, Entity, JoinColumn, ManyToOne } from "typeorm"
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from "typeorm"
 import { CasesEntity } from "./cases.entity";
 import { BaseEntityModel } from "./base.entity.model";
+import { UsersEntity } from "./users.entity";
 
 @Entity('images')
 export class ImagesEntity extends BaseEntityModel {
@@ -24,4 +25,7 @@ export class ImagesEntity extends BaseEntityModel {
     })
     @JoinColumn({ name: 'case_id' })
     cases: CasesEntity;
+
+    @OneToOne(() => UsersEntity, (user) => user.profile)
+    user: UsersEntity;
 }

@@ -2,6 +2,7 @@ import { Entity, Column, OneToMany, ManyToMany, JoinTable, OneToOne, JoinColumn 
 import { BaseEntityModel } from "./base.entity.model"
 import { CasesEntity } from "./cases.entity";
 import { DepartmentsEntity } from "./departments.entity";
+import { ImagesEntity } from "./images.entity";
 
 @Entity('users')
 export class UsersEntity extends BaseEntityModel {
@@ -31,4 +32,7 @@ export class UsersEntity extends BaseEntityModel {
     @OneToOne(() => DepartmentsEntity)
     @JoinColumn({name: 'departament_id'})
     departament: DepartmentsEntity;
+
+    @OneToOne(() => ImagesEntity, (image) => image.user)
+    profile: UsersEntity;
 }

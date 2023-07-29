@@ -13,6 +13,7 @@ import { RedisModule } from 'src/redis/redis.module';
     TypeOrmModule.forFeature([CasesEntity]),
   ],
   providers: [CasesService],
-  controllers:[CasesController]
+  controllers:[CasesController],
+  exports:[CasesService]
 })
 export class CasesModule {}
