@@ -35,4 +35,9 @@ export class CloudinayService {
       async deleteMultipleImages(publicIds: Array<string>): Promise<void> {
         await v2.api.delete_resources(publicIds);
       }
+
+      async getFileInfoByPublicId(public_id: string): Promise<any>{
+        return v2.api.resource(public_id)
+      }
+
 }
