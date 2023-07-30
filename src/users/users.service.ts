@@ -23,9 +23,15 @@ export class UsersService extends Repository<UsersEntity> {
     }
 
     async getUserInfo(id: string): Promise<UsersEntity> {
-        return await this.userRepository.findOne({
-            where: {id},
-            relations:['profile']
-        })
+        const user = await this.userRepository.findOneBy({id:id});
+        delete user.password;
+        return user;
+    }
+
+    async getUserAssignedCases(id: string): Promise<UsersEntity[]> {
+        return await this.userRepository.find({
+            where: {id:id},
+            relations:['cases']
+        });
     }
 }

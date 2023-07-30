@@ -1,7 +1,10 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { UsersEntity } from 'src/entities/users.entity';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create.user.dto';
+import { UserLogged } from 'src/decorators/user.auth.decorator';
+import { currentUser } from 'src/user.guard/user.guard';
+
 @Controller('users')
 export class UsersController {
     constructor(
@@ -14,7 +17,16 @@ export class UsersController {
     }
 
     @Get('/info')
-    async getUserInfo(): Promise<UsersEntity> {
-        return await this.usersService.getUserInfo('');
+    @UseGuards(currentUser)
+    async getUserInfo(@UserLogged() currentUser): Promise<UsersEntity> {
+        return await this.usersService.getUserInfo(currentUser.id);
+    }
+
+    @Get('cases')
+    @UseGuards(currentUser)
+    async getUserAssignedCases(@UserLogged() currentUser): Promise<UsersEntity[]> {
+        console.log(currentUser);
+        
+        return await this.usersService.getUserAssignedCases(currentUser.id);
     }
 }

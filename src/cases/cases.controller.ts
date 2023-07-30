@@ -4,6 +4,7 @@ import { CreateCaseDto } from './dto/create.case.dto';
 import { CasesEntity } from 'src/entities/cases.entity';
 import { RedisService } from 'src/redis/redis.service';
 import { currentUser } from 'src/user.guard/user.guard';
+import { UserLogged } from 'src/decorators/user.auth.decorator';
 
 @Controller('cases')
 export class CasesController {
@@ -14,8 +15,11 @@ export class CasesController {
 
     @Post('/create')
     @UseGuards(currentUser)
-    async createCase(@Body() dto:CreateCaseDto): Promise<CasesEntity> { 
-        return await this.casesService.createCase(dto);
+    async createCase(
+        @UserLogged() currentUser,
+        @Body() dto:CreateCaseDto
+        ): Promise<CasesEntity> { 
+        return await this.casesService.createCase(dto, currentUser);
     }
 
     @Get('/:id')
