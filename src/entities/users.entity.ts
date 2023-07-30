@@ -1,8 +1,9 @@
-import { Entity, Column, OneToMany, ManyToMany, JoinTable, OneToOne, JoinColumn } from "typeorm"
+import { Entity, Column, OneToMany, ManyToMany, JoinTable, OneToOne, JoinColumn, BeforeInsert } from "typeorm"
 import { BaseEntityModel } from "./base.entity.model"
 import { CasesEntity } from "./cases.entity";
 import { DepartmentsEntity } from "./departments.entity";
 import { ImagesEntity } from "./images.entity";
+import * as bcrypt from 'bcrypt';
 
 @Entity('users')
 export class UsersEntity extends BaseEntityModel {
@@ -11,6 +12,12 @@ export class UsersEntity extends BaseEntityModel {
 
     @Column()
     last_name: string;
+
+    //TODO manipulation of the object before being inserted
+    @BeforeInsert() 
+    async hashinPassword() {
+        this.password = await bcrypt.hash(this.password, 10);
+    }
 
     @Column()
     password: string;
