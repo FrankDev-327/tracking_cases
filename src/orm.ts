@@ -9,7 +9,7 @@ export const typeormConfig : PostgresConnectionOptions = {
     ssl: true,
     synchronize: process.env.NODE_ENV !== 'prod',
     entities: [
-      __dirname + '/../**/*.entity{.ts,.js}',
+      __dirname + '/../**/*.entity{.ts}',
     ],
     subscribers:[
       ImageSubscriber,
