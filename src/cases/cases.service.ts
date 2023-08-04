@@ -4,12 +4,14 @@ import { Repository, Like } from 'typeorm';
 import { CasesEntity } from 'src/entities/cases.entity';
 import { CreateCaseDto } from './dto/create.case.dto';
 import { UsersEntity } from 'src/entities/users.entity';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class CasesService extends Repository<CasesEntity> {
     constructor(
         @InjectRepository(CasesEntity)
-        private casesRepository: Repository<CasesEntity>
+        private casesRepository: Repository<CasesEntity>,
+        private usersService:UsersService,
         ) {
         super(
             casesRepository.target,
@@ -18,9 +20,14 @@ export class CasesService extends Repository<CasesEntity> {
         );
     }
 
-    async createCase(dto: CreateCaseDto): Promise<CasesEntity> {
+    async createCase(dto: CreateCaseDto, currentUser): Promise<CasesEntity> {        
         const cases = this.casesRepository.create(dto);
-        return await this.casesRepository.save(cases);
+        const user = await this.usersService.getUserInfo(currentUser.id);
+        const casesSaved = await this.casesRepository.save(cases);
+
+        user.cases = [casesSaved];
+        await user.save();
+        return casesSaved;
     }
 
     async getImageCasesById(id: string): Promise<CasesEntity> {
