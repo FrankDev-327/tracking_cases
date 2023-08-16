@@ -40,7 +40,9 @@ export class UsersEntity extends BaseEntityModel {
   })
   identification_id: string;
 
-  @ManyToMany(() => CasesEntity, (cases) => cases.users)
+  @ManyToMany(() => CasesEntity, (cases) => cases.users, {
+    cascade:false
+  })
   @JoinTable({ name: 'cases_users_table' })
   cases: CasesEntity[];
 
