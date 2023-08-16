@@ -8,15 +8,21 @@ import { UsersEntity } from 'src/entities/users.entity';
 import { CasesService } from 'src/cases/cases.service';
 import { UploadApiErrorResponse, UploadApiResponse } from 'cloudinary';
 import { CloudinayService } from 'src/cloudinay/cloudinay.service';
+<<<<<<< HEAD
 import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
+=======
+>>>>>>> added note services and controller
 
 @Injectable()
 export class ImagesService extends Repository<ImagesEntity> {
   constructor(
     @InjectRepository(ImagesEntity)
     private imageRepository: Repository<ImagesEntity>,
+<<<<<<< HEAD
     private casesService: CasesService,
     private readonly amqpConnection: AmqpConnection,
+=======
+>>>>>>> added note services and controller
     private cloudyService: CloudinayService,
   ) {
     super(

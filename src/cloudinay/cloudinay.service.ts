@@ -37,6 +37,6 @@ export class CloudinayService {
   }
 
   async getFileInfoByPublicId(public_id: string): Promise<any> {
-    return await v2.api.resource(public_id);
+    return v2.api.resource(public_id);
   }
 }

@@ -12,15 +12,18 @@ export const typeormConfig: PostgresConnectionOptions = {
   type: 'postgres',
   url: process.env.NEON_PG_URL,
   ssl: true,
-  synchronize: true,
+  synchronize: process.env.NODE_ENV !== 'prod',
   entities: [
-    UsersEntity,
     CasesEntity,
-    ImagesEntity,
-    DocumentsEntity,
+    UsersEntity,
     NoteCaseEntity,
-    DepartmentsEntity,
+    DocumentsEntity,
+    ImagesEntity,
+    DepartmentsEntity
   ],
   subscribers: [ImageSubscriber, CasesSubscriber],
-  logging: ['query', 'error'],
+  migrations: [__dirname + '/../migrations/*{.ts,.js}'],
+  logging: false,
 };
+
+//process.env.NODE_ENV !== 'prod',
