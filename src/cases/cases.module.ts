@@ -7,13 +7,9 @@ import { CasesController } from './cases.controller';
 import { RedisModule } from 'src/redis/redis.module';
 
 @Module({
-  imports:[
-    RedisModule,
-    UsersModule,
-    TypeOrmModule.forFeature([CasesEntity]),
-  ],
+  imports: [RedisModule, UsersModule, TypeOrmModule.forFeature([CasesEntity])],
   providers: [CasesService],
-  controllers:[CasesController],
-  exports:[CasesService]
+  controllers: [CasesController],
+  exports: [CasesService],
 })
 export class CasesModule {}

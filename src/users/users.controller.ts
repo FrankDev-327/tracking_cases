@@ -7,26 +7,24 @@ import { currentUser } from 'src/user.guard/user.guard';
 
 @Controller('users')
 export class UsersController {
-    constructor(
-        private usersService: UsersService
-    ){}
+  constructor(private usersService: UsersService) {}
 
-    @Post()
-    async createUser(@Body() userDto: CreateUserDto): Promise<UsersEntity> {
-        return await this.usersService.createUser(userDto);
-    }
+  @Post()
+  async createUser(@Body() userDto: CreateUserDto): Promise<UsersEntity> {
+    return await this.usersService.createUser(userDto);
+  }
 
-    @Get('/info')
-    @UseGuards(currentUser)
-    async getUserInfo(@UserLogged() currentUser): Promise<UsersEntity> {
-        return await this.usersService.getUserInfo(currentUser.id);
-    }
+  @Get('/info')
+  @UseGuards(currentUser)
+  async getUserInfo(@UserLogged() currentUser): Promise<UsersEntity> {
+    return await this.usersService.getUserInfo(currentUser.id);
+  }
 
-    @Get('cases')
-    @UseGuards(currentUser)
-    async getUserAssignedCases(@UserLogged() currentUser): Promise<UsersEntity[]> {
-        console.log(currentUser);
-        
-        return await this.usersService.getUserAssignedCases(currentUser.id);
-    }
+  @Get('cases')
+  @UseGuards(currentUser)
+  async getUserAssignedCases(
+    @UserLogged() currentUser,
+  ): Promise<UsersEntity[]> {
+    return await this.usersService.getUserAssignedCases(currentUser.id);
+  }
 }

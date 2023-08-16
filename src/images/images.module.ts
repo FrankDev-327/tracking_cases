@@ -7,13 +7,13 @@ import { ImagesEntity } from 'src/entities/images.entity';
 import { ImagesController } from './images.controller';
 
 @Module({
-    imports:[
-        CasesModule,
-        CloudinayModule,
-        TypeOrmModule.forFeature([ImagesEntity]),
-    ],
-    providers:[ImagesService],
-    controllers:[ImagesController],
-    exports:[ImagesService]
+  imports: [
+    CasesModule,
+    CloudinayModule,
+    TypeOrmModule.forFeature([ImagesEntity]),
+  ],
+  providers: [ImagesService],
+  controllers: [ImagesController],
+  exports: [ImagesService],
 })
 export class ImagesModule {}
