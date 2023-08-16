@@ -8,34 +8,43 @@ import { JwtService } from '@nestjs/jwt';
 import { AuthTokenDto } from './dto/auth.token.dto';
 
 @Injectable()
-export class AuthService extends Repository<UsersEntity>{
-     constructor(
-        @InjectRepository(UsersEntity)
-        private authRepository: Repository<UsersEntity>,
-        private jwtService:JwtService,
-     ){
-        super(
-            authRepository.target,
-            authRepository.manager,
-            authRepository.queryRunner
-        );
-     }
+export class AuthService extends Repository<UsersEntity> {
+  constructor(
+    @InjectRepository(UsersEntity)
+    private authRepository: Repository<UsersEntity>,
+    private jwtService: JwtService,
+  ) {
+    super(
+      authRepository.target,
+      authRepository.manager,
+      authRepository.queryRunner,
+    );
+  }
 
-     async signIn(authDto: AuthDto) : Promise<AuthTokenDto> {
-        const userData = await this.authRepository.findOne({
-            where: {
-                identification_id: authDto.identificationId
-            }
-        });
-    
-        if(!userData) throw new NotFoundException('This identification does not exsti or password is wrong.');
-        const comparePass = await bcrypt.compare(authDto.password, userData.password);
+  async signIn(authDto: AuthDto): Promise<AuthTokenDto> {
+    const userData = await this.authRepository.findOne({
+      where: {
+        identification_id: authDto.identificationId,
+      },
+    });
 
-        if(!comparePass) throw new NotFoundException('This identification does not exsti or password is wrong.');
-        return {
-            access_token: await this.jwtService.signAsync({
-                id:userData.id
-            }),
-          };
-     }
+    if (!userData)
+      throw new NotFoundException(
+        'This identification does not exsti or password is wrong.',
+      );
+    const comparePass = await bcrypt.compare(
+      authDto.password,
+      userData.password,
+    );
+
+    if (!comparePass)
+      throw new NotFoundException(
+        'This identification does not exsti or password is wrong.',
+      );
+    return {
+      access_token: await this.jwtService.signAsync({
+        id: userData.id,
+      }),
+    };
+  }
 }

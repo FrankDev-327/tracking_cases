@@ -8,32 +8,32 @@ import { UserLogged } from 'src/decorators/user.auth.decorator';
 
 @Controller('cases')
 export class CasesController {
-    constructor(
-        private redisService:RedisService,
-        private casesService:CasesService,
-    ){}
+  constructor(
+    private redisService: RedisService,
+    private casesService: CasesService,
+  ) {}
 
-    @Post('/create')
-    @UseGuards(currentUser)
-    async createCase(
-        @UserLogged() currentUser,
-        @Body() dto:CreateCaseDto
-        ): Promise<CasesEntity> { 
-        return await this.casesService.createCase(dto, currentUser);
+  @Post('/create')
+  @UseGuards(currentUser)
+  async createCase(
+    @UserLogged() currentUser,
+    @Body() dto: CreateCaseDto,
+  ): Promise<CasesEntity> {
+    return await this.casesService.createCase(dto, currentUser);
+  }
+
+  @Get('/:id')
+  @UseGuards(currentUser)
+  async getImageCasesById(@Param('id') id: string): Promise<CasesEntity> {
+    let data;
+    const expKey = await this.redisService.checkExpRedisKey(id);
+    if (expKey <= 0) {
+      data = await this.casesService.getImageCasesById(id);
+      await this.redisService.setRedis(id, data);
+    } else {
+      data = await this.redisService.getRedis(id);
     }
 
-    @Get('/:id')
-    @UseGuards(currentUser)
-    async getImageCasesById(@Param('id') id: string): Promise<CasesEntity> {
-        let data;
-        const expKey = await this.redisService.checkExpRedisKey(id);
-        if(expKey <= 0) {
-            data = await this.casesService.getImageCasesById(id);
-            await this.redisService.setRedis(id, data);
-        } else {
-            data = await this.redisService.getRedis(id);
-        }
-
-        return data;
-    }
+    return data;
+  }
 }

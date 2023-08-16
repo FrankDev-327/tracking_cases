@@ -7,7 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from 'src/users/users.module';
 
 @Module({
-  imports:[
+  imports: [
     UsersModule,
     TypeOrmModule.forFeature([UsersEntity]),
     JwtModule.register({
@@ -16,8 +16,8 @@ import { UsersModule } from 'src/users/users.module';
       signOptions: { expiresIn: '30m' },
     }),
   ],
-  exports:[AuthService],
+  exports: [AuthService],
   controllers: [AuthController],
-  providers: [AuthService]
+  providers: [AuthService],
 })
 export class AuthModule {}
