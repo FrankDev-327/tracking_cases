@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { CasesService } from './cases.service';
 import { CreateCaseDto } from './dto/create.case.dto';
 import { CasesEntity } from 'src/entities/cases.entity';
@@ -35,5 +35,11 @@ export class CasesController {
     }
 
     return data;
+  }
+
+  @Put('/assign/:id')
+  @UseGuards(currentUser)
+  async assignCaseUser(@Param('id') id: string, @UserLogged() current): Promise<CasesEntity> {
+    return await this.casesService.assignCaseToUser(id, current.id);
   }
 }

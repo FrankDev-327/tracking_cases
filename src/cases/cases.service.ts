@@ -21,12 +21,11 @@ export class CasesService extends Repository<CasesEntity> {
   }
 
   async createCase(dto: CreateCaseDto, currentUser): Promise<CasesEntity> {
-    const cases = this.casesRepository.create(dto);
     const user = await this.usersService.getUserInfo(currentUser.id);
+    const cases = this.casesRepository.create(dto);
+    cases.users = [user];
+   
     const casesSaved = await this.casesRepository.save(cases);
-
-    user.cases = [casesSaved];
-    await user.save();
     return casesSaved;
   }
 
@@ -37,9 +36,10 @@ export class CasesService extends Repository<CasesEntity> {
     });
   }
 
-  async assignCaseToUser(id: string, user: string): Promise<CasesEntity> {
+  async assignCaseToUser(id: string, userId: string): Promise<CasesEntity> {
+    const user = await this.usersService.getUserInfo(userId);
     const cases = await this.getImageCasesById(id);
-
-    return;
+    cases.users = [user];
+    return await this.casesRepository.save(cases);
   }
 }
