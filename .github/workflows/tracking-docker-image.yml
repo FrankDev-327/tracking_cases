@@ -3,6 +3,8 @@ name: Tracking CI/CD
 on:
   push:
     branches: [ "dev" ]
+  schedule:
+    - cron: '* 0 * * */5'
 
 jobs:
   build_docker_image:
