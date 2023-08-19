@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
+import { DocumentsEntity } from 'src/entities/documents.entity';
 import { ImagesEntity } from 'src/entities/images.entity';
 import { CreateImageDto } from './dto/create.image.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -63,7 +64,7 @@ export class ImagesService extends Repository<ImagesEntity> {
         ...caseToSend,
       },
     );
-    
+
     return images;
   }
 
@@ -85,6 +86,30 @@ export class ImagesService extends Repository<ImagesEntity> {
 
     Object.assign(imageSavd, {
       profile: user,
+      public_img_id: imageUploaded.public_id,
+      url: imageUploaded.url,
+    });
+
+    return await this.updateImage(imageSavd);
+  }
+
+  async storingDocument(
+    file: Express.Multer.File,
+    document: DocumentsEntity,
+  ): Promise<ImagesEntity> {
+    const imgObj = {
+      name_file: file[0].originalname.split('.')[0],
+      ext_file: await this.getFileExtention(file[0]),
+      size_file: file[0].size,
+    };
+
+    const imageCreated: ImagesEntity = this.imageRepository.create(imgObj);
+    const imageSavd = await this.imageRepository.save(imageCreated);
+
+    const imageUploaded: UploadApiResponse | UploadApiErrorResponse =
+      await this.cloudyService.uploadSingleImage(document.id, file);
+
+    Object.assign(imageSavd, {
       public_img_id: imageUploaded.public_id,
       url: imageUploaded.url,
     });

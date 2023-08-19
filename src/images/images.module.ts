@@ -3,6 +3,7 @@ import { CloudinayModule } from 'src/cloudinay/cloudinay.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CasesModule } from 'src/cases/cases.module';
 import { ImagesService } from './images.service';
+import { DocumentsModule } from 'src/documents/documents.module';
 import { ImagesEntity } from 'src/entities/images.entity';
 import { ImagesController } from './images.controller';
 

@@ -8,13 +8,18 @@ import {
   Post,
   Body,
   NotFoundException,
+  UseGuards,
 } from '@nestjs/common';
 import { ImagesService } from './images.service';
-import { CasesService } from 'src/cases/cases.service';
-import { ImagesEntity } from 'src/entities/images.entity';
+import { CasesService } from '../cases/cases.service';
+import { ImagesEntity } from '../entities/images.entity';
 import { FilesInterceptor } from '@nestjs/platform-express';
-import { CloudinayService } from 'src/cloudinay/cloudinay.service';
+import { CloudinayService } from '../cloudinay/cloudinay.service';
+import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { currentUser } from '../user.guard/user.guard';
+import { ResponseCreateImageDto } from './dto/response.create.image.dto';
 
+@ApiTags('images')
 @Controller('images')
 export class ImagesController {
   constructor(
@@ -24,6 +29,9 @@ export class ImagesController {
   ) {}
 
   @Post()
+  @UseGuards(currentUser)
+  @ApiOperation({ summary: 'Create a image' })
+  @ApiOkResponse({ type: [ResponseCreateImageDto] })
   @UseInterceptors(FilesInterceptor('files', 4, {}))
   async createImage(
     @Body('casesId') casesId: string,

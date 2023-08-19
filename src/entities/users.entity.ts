@@ -41,12 +41,14 @@ export class UsersEntity extends BaseEntityModel {
   identification_id: string;
 
   @ManyToMany(() => CasesEntity, (cases) => cases.users, {
-    cascade:false
+    cascade: false,
   })
   @JoinTable({ name: 'cases_users_table' })
   cases: CasesEntity[];
 
-  @OneToOne(() => DepartmentsEntity)
+  @OneToOne(() => DepartmentsEntity, {
+    cascade: false,
+  })
   @JoinColumn({ name: 'departament_id' })
   departament: DepartmentsEntity;
 

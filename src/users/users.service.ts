@@ -31,10 +31,7 @@ export class UsersService extends Repository<UsersEntity> {
   async getUserAssignedCases(id: string): Promise<UsersEntity[]> {
     return await this.userRepository.find({
       where: { id: id },
-      select:[
-        'id',
-        'identification_id'
-      ],
+      select: ['id', 'identification_id'],
       relations: ['cases.image'],
     });
   }
