@@ -8,9 +8,7 @@ import { UsersService } from 'src/users/users.service';
 
 @EventSubscriber()
 export class CasesSubscriber implements EntitySubscriberInterface<CasesEntity> {
-  constructor(
-    private usersService: UsersService,
-  ) {}
+  constructor(private usersService: UsersService) {}
 
   listenTo(): string | Function {
     return CasesEntity;

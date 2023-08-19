@@ -15,6 +15,8 @@ import { HealthCheckModule } from './health-check/health-check.module';
 import { RabbitModule } from './rabbit/rabbit.module';
 import { CasesMessageGateway } from './cases-message/cases-message.gateway';
 import { CasesMessageModule } from './cases-message/cases-message.module';
+import { TesseractService } from './tesseract/tesseract.service';
+import { TesseractModule } from './tesseract/tesseract.module';
 
 @Module({
   imports: [
@@ -32,7 +34,8 @@ import { CasesMessageModule } from './cases-message/cases-message.module';
     HealthCheckModule,
     RabbitModule,
     CasesMessageModule,
+    TesseractModule,
   ],
-  providers: [CasesMessageGateway],
+  providers: [CasesMessageGateway, TesseractService],
 })
 export class AppModule {}

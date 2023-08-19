@@ -26,6 +26,7 @@ export class AuthService extends Repository<UsersEntity> {
       where: {
         identification_id: authDto.identificationId,
       },
+      relations: ['departament'],
     });
 
     if (!userData)
@@ -44,6 +45,7 @@ export class AuthService extends Repository<UsersEntity> {
     return {
       access_token: await this.jwtService.signAsync({
         id: userData.id,
+        departament: userData.departament.id,
       }),
     };
   }

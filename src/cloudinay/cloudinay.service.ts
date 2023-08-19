@@ -6,6 +6,7 @@ import {
   UploadApiResponse,
   v2,
 } from 'cloudinary';
+import { Readable } from 'stream';
 
 @Injectable()
 export class CloudinayService {
@@ -13,6 +14,15 @@ export class CloudinayService {
     folder_id: string,
     file: Express.Multer.File,
   ): Promise<UploadApiResponse | UploadApiErrorResponse> {
+    let fileData;
+
+    if (Array.isArray(file)) {
+      fileData = file[0];
+    } else {
+      fileData = file;
+    }
+    console.log(fileData);
+
     return new Promise((resolve, reject) => {
       const upload: UploadStream = v2.uploader.upload_stream(
         {
@@ -24,7 +34,9 @@ export class CloudinayService {
         },
       );
 
-      toStream(file.buffer).pipe(upload);
+      toStream(fileData.buffer).pipe(upload);
+      /*  const readableStream = Readable.from(file.buffer);
+      readableStream.pipe(upload); */
     });
   }
 

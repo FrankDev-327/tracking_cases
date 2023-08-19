@@ -24,7 +24,7 @@ export class CasesService extends Repository<CasesEntity> {
     const user = await this.usersService.getUserInfo(currentUser.id);
     const cases = this.casesRepository.create(dto);
     cases.users = [user];
-   
+
     const casesSaved = await this.casesRepository.save(cases);
     return casesSaved;
   }

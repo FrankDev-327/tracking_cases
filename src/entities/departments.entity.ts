@@ -1,11 +1,4 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  JoinTable,
-  OneToMany,
-  OneToOne,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, OneToMany, OneToOne } from 'typeorm';
 import { UsersEntity } from './users.entity';
 import { BaseEntityModel } from './base.entity.model';
 import { DocumentsEntity } from './documents.entity';
@@ -19,7 +12,6 @@ export class DepartmentsEntity extends BaseEntityModel {
   section: string;
 
   @OneToOne(() => UsersEntity)
-  @JoinColumn({ name: 'user_id' })
   user: UsersEntity;
 
   @OneToMany(() => DocumentsEntity, (document) => document.departaments)

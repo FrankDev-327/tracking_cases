@@ -12,10 +12,14 @@ import { CasesEntity } from 'src/entities/cases.entity';
 import { Socket, Server } from 'socket.io';
 
 @WebSocketGateway({
-  namespace:'cases-messages',
+  namespace: 'cases-messages',
   cors: {
-    origin: ['http://localhost:9090', 'https://amritb.github.io', 'http://amritb.github.io'],
-    credentials: true
+    origin: [
+      'http://localhost:9090',
+      'https://amritb.github.io',
+      'http://amritb.github.io',
+    ],
+    credentials: true,
   },
 })
 export class CasesMessageGateway
@@ -52,7 +56,7 @@ export class CasesMessageGateway
     routingKey: 'cases-relation-route',
     queue: 'cases-relation-queue',
   })
-  async sendingCasesCreated(cases: CasesEntity): Promise<any> {    
+  async sendingCasesCreated(cases: CasesEntity): Promise<any> {
     this.server.emit('send-case', cases);
   }
 }

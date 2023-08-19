@@ -6,12 +6,9 @@ import { NotesService } from './notes.service';
 import { NotesController } from './notes.controller';
 
 @Module({
-  imports:[
-    CasesModule,
-    TypeOrmModule.forFeature([NoteCaseEntity])
-  ],
+  imports: [CasesModule, TypeOrmModule.forFeature([NoteCaseEntity])],
   providers: [NotesService],
   controllers: [NotesController],
-  exports:[NotesService]
+  exports: [NotesService],
 })
 export class NotesModule {}

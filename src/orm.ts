@@ -19,7 +19,7 @@ export const typeormConfig: PostgresConnectionOptions = {
     NoteCaseEntity,
     DocumentsEntity,
     ImagesEntity,
-    DepartmentsEntity
+    DepartmentsEntity,
   ],
   subscribers: [ImageSubscriber, CasesSubscriber],
   migrations: [__dirname + '/../migrations/*{.ts,.js}'],

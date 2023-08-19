@@ -1,11 +1,14 @@
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
 import { CasesEntity } from './cases.entity';
 import { DepartmentsEntity } from './departments.entity';
 import { BaseEntityModel } from './base.entity.model';
+import { ImagesEntity } from './images.entity';
 
 @Entity('documents')
 export class DocumentsEntity extends BaseEntityModel {
-  @Column()
+  @Column({
+    nullable: true,
+  })
   text_document: string;
 
   @Column()
@@ -18,4 +21,10 @@ export class DocumentsEntity extends BaseEntityModel {
   @ManyToOne(() => DepartmentsEntity, (departaments) => departaments.document)
   @JoinColumn({ name: 'departament_id' })
   departaments: DepartmentsEntity;
+
+  @OneToOne(() => ImagesEntity, {
+    cascade: false,
+  })
+  @JoinColumn({ name: 'img_id' })
+  image: ImagesEntity;
 }
