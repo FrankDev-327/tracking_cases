@@ -29,3 +29,21 @@ jobs:
         with:
           push: true
           tags: ${{ secrets.DOCKER_HUB_USER_NAME }}/${{ secrets.DOCKER_HUB_REPOSITORY }}:latest
+
+
+  send-mail:
+            runs-on: ubuntu-latest
+            needs: build_docker_image
+            name: Send email on every cron schedule job
+            if: ${{ github.ref == 'refs/heads/dev' && github.event_name == 'schedule' }}
+            steps:
+            - name: Send Mail Action
+              id: sendmail
+              uses: vineetchoudhary/mailgun-action@master
+              with:
+                api-key: ${{ secrets.API_KEY }}
+                domain: ${{ secrets.DOMAIN }}
+                to: ${{ secrets.TO }}
+                body: '<p><b>Body</b> - {{ ${GITHUB_ACTOR} }} <br /><br /><b>CronJob</b> - {{ ${GITHUB_EVENT_NAME} }}.  <br /><br /><b>By</b> - {{  ${GITHUB_REPOSITORY} }}</p>'
+            - name: Send Mail Action Response
+              run: echo "${{ steps.sendmail.outputs.response }}"
