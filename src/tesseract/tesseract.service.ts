@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import * as tesseract from 'node-tesseract-ocr';
+const fullFilePath = __dirname+'/utilstempFile.pdf';
 
 @Injectable()
 export class TesseractService {
@@ -12,11 +13,11 @@ export class TesseractService {
     presets: ['pdf'],
   };
 
-  async generateOCR(fromUrl): Promise<any> {
+  async generateOCR(): Promise<any> {
     return tesseract
-      .recognize(fromUrl, this.config)
+      .recognize(fullFilePath, this.config)
       .then((text) => {
-        console.log('Result:', text);
+        //console.log('Result:', text);
         return text;
       })
       .catch((error) => {

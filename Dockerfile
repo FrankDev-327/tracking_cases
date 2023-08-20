@@ -1,5 +1,13 @@
 FROM node:alpine As development
 
+# install tesseract
+RUN apt-get clean && \
+    apt-get -y update && \
+    apt-get install -y --force-yes \
+    tesseract-ocr \
+    tesseract-ocr-hrv && \
+    apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
 WORKDIR /usr/src/app
 
 COPY package*.json ./
@@ -11,6 +19,14 @@ COPY . .
 RUN npm run build
 
 FROM node:alpine as production
+
+# install tesseract
+RUN apt-get clean && \
+    apt-get -y update && \
+    apt-get install -y --force-yes \
+    tesseract-ocr \
+    tesseract-ocr-hrv && \
+    apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
