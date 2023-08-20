@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { DocumentsEntity } from 'src/entities/documents.entity';
 import { TesseractService } from 'src/tesseract/tesseract.service';
 import { Repository } from 'typeorm';
+import { storingTempFile, deletingTempFile, convertPDFToImage } from '../utils/helper';
 import { CreateDocumentDto } from './dto/create.document.dto';
 import { ImagesService } from 'src/images/images.service';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -35,13 +36,16 @@ export class DocumentsService extends Repository<DocumentsEntity> {
       files,
       documentSaved,
     );
-    const extractDocumentText = await this.tesseractService.generateOCR(
-      documentStored.url,
-    );
+
+    await storingTempFile(files);
+    /* const extractDocumentText = await this.tesseractService.generateOCR();*/
+    //await deletingTempFile(); 
+    await convertPDFToImage();
+
     return await this.updateDocuemtOCRText(
       documentSaved.id,
       documentStored,
-      extractDocumentText,
+      '',
     );
   }
 
