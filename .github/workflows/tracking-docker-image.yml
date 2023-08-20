@@ -7,6 +7,47 @@ on:
     - cron: '* 0 * * */5'
 
 jobs:
+  install_pnpm:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checking Repository
+        uses: actions/checkout@v2
+
+      - name: Installing into the environment PNPM
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Installing pnpm packages
+        run: pnpm install
+
+      - name: Running Test
+        run: pnpm run test:cov
+
+      - name: Archive test results
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage-report
+          path: |
+              ./coverage/clover.xml
+              !./coverage/lcov-report/*
+              !./coverage/lcov.info
+          retention-days: 1
+          
+  display_coverage:
+    needs: install_pnpm
+    runs-on: ubuntu-latest
+
+    steps: 
+      - name: Downloading test artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: coverage-report
+
+      - name: Shown resutls
+        run: cat lover.xml
+    
   build_docker_image:
     runs-on: ubuntu-latest
 
