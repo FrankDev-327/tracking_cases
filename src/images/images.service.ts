@@ -34,7 +34,7 @@ export class ImagesService extends Repository<ImagesEntity> {
     let images: ImagesEntity[] = [];
     images = await Promise.all(
       files?.map(async (file: Express.Multer.File): Promise<ImagesEntity> => {
-        let imgObj = {
+        const imgObj = {
           name_file: file.originalname.split('.')[0],
           ext_file: await this.getFileExtention(file),
           size_file: file.size,
@@ -72,7 +72,7 @@ export class ImagesService extends Repository<ImagesEntity> {
     file: Express.Multer.File,
     user: UsersEntity,
   ): Promise<ImagesEntity> {
-    let imgObj = {
+    const imgObj = {
       name_file: file[0].originalname.split('.')[0],
       ext_file: await this.getFileExtention(file[0]),
       size_file: file[0].size,

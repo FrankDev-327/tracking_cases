@@ -7,7 +7,7 @@ on:
     - cron: '* 0 * * */5'
 
 jobs:
-  install_pnpm:
+  install_pnpm_run_test:
     runs-on: ubuntu-latest
 
     steps:
@@ -36,7 +36,7 @@ jobs:
           retention-days: 1
           
   display_coverage:
-    needs: install_pnpm
+    needs: install_pnpm_run_test
     runs-on: ubuntu-latest
 
     steps: 
@@ -49,6 +49,7 @@ jobs:
         run: cat clover.xml
     
   build_docker_image:
+    needs: install_pnpm_run_test
     runs-on: ubuntu-latest
 
     steps:
