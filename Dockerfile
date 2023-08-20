@@ -1,5 +1,7 @@
 FROM node:alpine As development
 
+USER root
+
 # install tesseract
 RUN apt-get clean && \
     apt-get -y update && \
@@ -19,6 +21,8 @@ COPY . .
 RUN npm run build
 
 FROM node:alpine as production
+
+
 
 # install tesseract
 RUN apt-get clean && \
