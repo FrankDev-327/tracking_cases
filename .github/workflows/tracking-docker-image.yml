@@ -3,8 +3,8 @@ name: Tracking CI/CD
 on:
   push:
     branches: [ "dev" ]
-  schedule:
-    - cron: '* 0 * * */5'
+  # schedule:
+  #   - cron: '* 0 * * */5'
 
 jobs:
   install_pnpm_run_test:
@@ -35,18 +35,18 @@ jobs:
               !./coverage/lcov.info
           retention-days: 1
           
-  display_coverage:
-    needs: install_pnpm_run_test
-    runs-on: ubuntu-latest
+  # display_coverage:
+  #   needs: install_pnpm_run_test
+  #   runs-on: ubuntu-latest
 
-    steps: 
-      - name: Downloading test artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: coverage-report
+  #   steps: 
+  #     - name: Downloading test artifact
+  #       uses: actions/download-artifact@v3
+  #       with:
+  #         name: coverage-report
 
-      - name: Shown resutls
-        run: cat clover.xml
+  #     - name: Shown resutls
+  #       run: cat clover.xml
     
   build_docker_image:
     needs: install_pnpm_run_test
@@ -78,14 +78,32 @@ jobs:
             needs: build_docker_image
             name: Send email on every cron schedule job
             if: ${{ github.ref == 'refs/heads/dev' && github.event_name == 'schedule' }}
+
             steps:
-            - name: Send Mail Action
-              id: sendmail
-              uses: vineetchoudhary/mailgun-action@master
-              with:
-                api-key: ${{ secrets.API_KEY }}
-                domain: ${{ secrets.DOMAIN }}
-                to: ${{ secrets.TO }}
-                body: '<p><b>Body</b> - ${{ github.actor }} <br /><br /><b>CronJob</b> - ${{ github.event_name }}.  <br /><br /><b>By</b> - ${{ github.repository }}</p>'
-            - name: Send Mail Action Response
-              run: echo "${{ steps.sendmail.outputs.response }}"
+              - name: Downloading test artifact
+                uses: actions/download-artifact@v3
+                with: 
+                  name: coverage-report
+
+              - name: Sending Test Results
+                uses: maful/github-actions-mailgun@main
+                with:
+                  api_key: ${{ secrets.API_KEY }}
+                  domain: ${{ secrets.DOMAIN }}
+                  from: ${{ secrets.TO }}
+                  to: ${{ secrets.TO }}
+                  subject: 'Action subject'
+                  body: 'Action body'
+                  attachment: clover.xml
+
+            # steps:
+            # - name: Send Mail Action
+            #   id: sendmail
+            #   uses: vineetchoudhary/mailgun-action@master
+            #   with:
+            #     api-key: ${{ secrets.API_KEY }}
+            #     domain: ${{ secrets.DOMAIN }}
+            #     to: ${{ secrets.TO }}
+            #     body: '<p><b>Body</b> - ${{ github.actor }} <br /><br /><b>CronJob</b> - ${{ github.event_name }}.  <br /><br /><b>By</b> - ${{ github.repository }}</p>'
+            # - name: Send Mail Action Response
+            #   run: echo "${{ steps.sendmail.outputs.response }}"
