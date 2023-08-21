@@ -30,24 +30,13 @@ jobs:
         with:
           name: coverage-report
           path: |
-              ./coverage/clover.xml
-              !./coverage/lcov-report/*
+              ./coverage/lcov-report/index.html
+              !./coverage/lcov-report/src/*
               !./coverage/lcov.info
+              !./coverage/clover.xml
+              !./coverage/coverage-final.json
           retention-days: 1
           
-  # display_coverage:
-  #   needs: install_pnpm_run_test
-  #   runs-on: ubuntu-latest
-
-  #   steps: 
-  #     - name: Downloading test artifact
-  #       uses: actions/download-artifact@v3
-  #       with:
-  #         name: coverage-report
-
-  #     - name: Shown resutls
-  #       run: cat clover.xml
-    
   build_docker_image:
     needs: install_pnpm_run_test
     runs-on: ubuntu-latest
@@ -92,18 +81,7 @@ jobs:
                   domain: ${{ secrets.DOMAIN }}
                   from: ${{ secrets.TO }}
                   to: ${{ secrets.TO }}
-                  subject: 'Action subject'
-                  body: 'Action body'
-                  attachment: clover.xml
+                  subject: 'Unit test results'
+                  body: 'file in html'
+                  attachment: index.html
 
-            # steps:
-            # - name: Send Mail Action
-            #   id: sendmail
-            #   uses: vineetchoudhary/mailgun-action@master
-            #   with:
-            #     api-key: ${{ secrets.API_KEY }}
-            #     domain: ${{ secrets.DOMAIN }}
-            #     to: ${{ secrets.TO }}
-            #     body: '<p><b>Body</b> - ${{ github.actor }} <br /><br /><b>CronJob</b> - ${{ github.event_name }}.  <br /><br /><b>By</b> - ${{ github.repository }}</p>'
-            # - name: Send Mail Action Response
-            #   run: echo "${{ steps.sendmail.outputs.response }}"
