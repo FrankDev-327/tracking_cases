@@ -3,8 +3,8 @@ name: Tracking CI/CD
 on:
   push:
     branches: [ "dev" ]
-  schedule: 
-    - cron: '* 0 * * */5'
+  # schedule: 
+  #   - cron: '* 0 * * */5'
 
 jobs:
   install_pnpm_run_test:
